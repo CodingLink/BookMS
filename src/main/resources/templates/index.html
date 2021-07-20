@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!-- 引入 layui.css -->
+<link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>图书管理系统</title>
+    <style>
+
+        /*body {*/
+        /*    !*width: 100%;*!*/
+        /*    !*height: 100%;*!*/
+        /*    background: white;*/
+        /*    background-size: cover;*/
+        /*}*/
+
+        #login_form {
+            width: 400px;
+            height: 400px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: #f2f2f2;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div class="layui-container" id="login_form">
+
+        <div>
+            <h1 style="color: red">图书管理系统</h1>
+            <br>
+            <h2>用户登录</h2>
+            <br>
+        </div>
+
+        <form class="layui-form" id="my_form" method="post" action="/userLogin">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="userName" id="username" autofocus
+                           placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">密 码:</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" id="password"
+                           placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户身份</label>
+                <div class="layui-input-block">
+                    <input class="form-check-input" type="radio" name="role" value="1" title="学生" checked>
+                    <input class="form-check-input" type="radio" name="role" value="0" title="管理员">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-col-md4 layui-col-md-offset4">
+                <button id="sub_btn" class="layui-btn layui-btn-normal">登录</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<!-- 引入 layui.js -->
+<script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+    layui.use(['layer', 'form'], function () {
+        let layer = layui.layer;
+        let form = layui.form;
+        form.render();
+
+        //layui弹出窗口
+        $(function () {
+            let flag = [[${session.flag}]];
+            if (flag) {
+                layer.msg("用户名或密码错误", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }
+        });
+    });
+
+    $("#sub_btn").click(function () {
+        let username = $("#username").val();
+        let user_check = check(username);
+
+        //判断用户名是否为空
+        if (user_check) {
+            let pwd = $("#password").val();
+            let pwd_check = check(pwd);
+
+            if (pwd_check) {
+
+                let role_id = $('input[name="role"]:checked').val();
+
+                // 如果role_id ==1 ,则是普通用户 , 直接提交表单
+                if (role_id == 1) {
+                    $("#my_form").submit();
+                } else {
+                    //如果是管理员 , 则将action 进行更改
+                    $("#my_form").attr("action", "/adminLogin").submit();
+                }
+            }
+        }
+    })
+
+    // 校验表单是否为空,  如果有值 -> 返回 true , 如果未输入 返回 false;
+    function check(val) {
+        val = val.toString().trim();
+        return !(val == '');
+    }
+</script>
+
+</body>
+</html>

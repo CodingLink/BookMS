@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- 引入 layui.css -->
+<link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
+<head>
+    <meta charset="UTF-8">
+    <title>新增图书</title>
+</head>
+<body>
+<!-- 引入 layui.js -->
+<script src="//unpkg.com/layui@2.6.8/dist/layui.js"></script>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo layui-hide-xs layui-bg-black">图书管理系统</div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                <a href="javascript:;">
+                    <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                         class="layui-nav-img">
+                    <span th:text="${session.admin.getAdminName()}"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">Your Profile</a></dd>
+                    <dd><a href="">Settings</a></dd>
+                    <dd><a href="">Sign out</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+                <a href="javascript:;">
+                    <i class="layui-icon layui-icon-more-vertical"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree">
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">书籍管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/addBook1">&emsp;&emsp;录入新书</a></dd>
+                        <dd><a href="/admin/queryBook">&emsp;&emsp;查询书籍</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/selectAll">&emsp;&emsp;查询用户</a></dd>
+                        <dd><a href="/addUserPage">&emsp;&emsp新增用户</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item ">
+                    <a class="" href="javascript:;">借阅信息</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/allBorrowBooksRecordPage?pageNum=1">&emsp;&emsp;所有记录</a></dd>
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item "><a href="/adminInfoPage">个人信息</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="layui-body layui-container"
+         style="margin : 10px auto; padding:10px 16px ;border: 200px; width: 480px; height: 580px; background-color: #f2f2f2">
+
+        <hr class="layui-bg-blue">
+        <h2 style="text-align:center">添加书籍</h2>
+        <hr class="layui-bg-blue">
+
+        <div style="width: 420px; padding: 20px; margin: auto auto; background-color: #f2f2f2">
+            <form class="layui-form" id="addBookForm" action="/admin/addBook">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">书 名</label>
+                    <div class="layui-input-inline">
+                        <input required lay-verify="required" id="bookName" type="text" name="bookName"
+                               placeholder="请输入书名" autofocus
+                               class="layui-input" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">作 者</label>
+                    <div class="layui-input-inline">
+                        <input id="bookAuthor" lay-verify="required" type="text" name="bookAuthor" placeholder="请输入作者"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">出版社</label>
+                    <div class="layui-input-inline">
+                        <input id="bookPublish" lay-verify="required" type="text" name="bookPublish"
+                               placeholder="请输入出版社" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">类 别</label>
+                    <div class="layui-input-inline">
+                        <!--                    <select lay-verify="required" id="bookCategory" name="bookCategory">
+                                            </select>-->
+                        <input id="bookCategory" lay-verify="required" type="text" name="bookCategory"
+                               placeholder="请输入类别" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">价 格</label>
+                    <div class="layui-input-inline">
+                        <input id="bookPrice" lay-verify="number" type="text" name="bookPrice" placeholder="￥"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">简 介</label>
+                    <div class="layui-input-inline">
+                    <textarea id="bookIntroduction" lay-verify="required" name="bookIntroduction" placeholder="请输入简介"
+                              class="layui-textarea "
+                              autocomplete="off"></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-left: 100px">
+                    <input type="submit" lay-filter="btn1" id="btn1" class="layui-btn" lay-submit="" value="添加图书">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['element', 'form', 'layer'], function () {
+        let layer = layui.layer;
+        let element = layui.element;
+        let form = layui.form;
+
+        form.on('submit(btn1)', function (data) {
+
+            addBook();
+
+            // console.log(data.field); //当前容器的全部表单字段，名值对形式：{name: value};获取单个值data.field["title"]
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+    function addBook() {
+
+        $.ajax({
+            async: false,
+            type: 'post',
+            url: '/addBook',
+            data: $('#addBookForm').serialize(),
+            success: function (data) {
+                layer.msg("添加成功", {time: 1500, icon: 1});
+
+                setTimeout(function () {
+                    // 重新刷新页面
+                    location.reload();
+                }, 1500)
+            },
+            error: function (data) {
+                alert("添加失败");
+            }
+        });
+    };
+
+
+</script>
+</body>
+</html>
